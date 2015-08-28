@@ -23,18 +23,19 @@
     <link rel="stylesheet" href="{{assetUrl}}{{cssfile}}" />
     {% endfor %}
 
-    <link rel="icon" type="image/jpg" href="favicon.jpg" />
-</head>
-<body>
-    {% block body %}{% endblock %}
-
     <!-- Include registered javascript -->
     {% for jsfile in js.external %}
-    <script src="{{jsfile}}"></script>
+    <script src="{{jsfile}}" ></script>
     {% endfor %}
 
     {% for jsfile in js.internal %}
     <script src="{{assetUrl}}js/{{jsfile}}"></script>
     {% endfor %}
+
+    <link rel="icon" type="image/jpg" href="favicon.jpg" />
+</head>
+<body>
+    {% block body %}{% endblock %}
+
 </body>
 </html>
