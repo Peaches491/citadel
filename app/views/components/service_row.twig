@@ -1,10 +1,44 @@
+{% set el = do_header is defined ? 'th' : 'td' %}
 <tr class="vert-align">
-  <td>Sonarr</td>
-  <td>WebServer</td>
-  <td>192.168.1.130</td>
-  <td class="col-md-1">
-    <button type="button" class="btn btn-xs btn-success" aria-label="Left Align">
-      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Online
+  <{{el}}>{{ service.name|default('Name') }}</{{el}}>
+  {#<{{el}}>{{ service.machine.name|default('Machine') }}</{{el}}>#}
+  {#<{{el}}>{{ service.machine.ip|default('IP') }}</{{el}}>#}
+  <{{el}} class="colShrink">
+    {% if service.status is defined %}
+    <a role="button" class="btn btn-xs btn-{{ service.status.style|default("default") }}" 
+      href="{{ service.link|default("#") }}"
+      aria-label="">
+      <span class="glyphicon glyphicon-{{ service.status.icon|default('question-sign') }}" 
+        aria-hidden="true"></span> {{ service.status.text|default('Unknown') }}
+    </a>
+    {% endif %}
+  </{{el}}>
+  <{{el}} class="colShrink">
+    {% if service.status is defined %}
+    <button class="btn btn-xs btn-brimary" type="button" data-toggle="collapse" 
+      data-target="#collapse{{ service.name }}" aria-expanded="false" aria-controls="collapse">
+      <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
     </button>
-  </td>
+    {% endif %}
+  </{{el}}>
 </tr>
+{% if service.status is defined %}
+<tr class="hiddenRow">
+  <td colspan="4">
+    <div class="collapse accordion-body" id="collapse{{service.name}}">
+      <div class="well">
+        ...
+      </div>
+    </div>
+  </tr>
+</td>
+<script>
+window.onload = function() {
+  var elem = "#collapse{{ service.name|escape('js') }}";
+  $(elem).on('show.bs.collapse', function (event) {
+    console.log('Booyeah!' + $(this)[0]);
+    $(this).log();
+  });
+};
+</script>
+{% endif %}

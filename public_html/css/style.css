@@ -1,7 +1,52 @@
 .container-fluid {
-  padding: 2em;
+  /*padding: 2em;*/
 }
 
 .table tbody>tr.vert-align>td{
     vertical-align: middle;
+}
+
+.hiddenRow td {
+  padding: 0 !important;
+  /*border-top: none !important;*/
+  margin-bottom: -1px !important;
+}
+
+td.colShrink {
+  width: 1px;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+  background-color: white !important;
+}
+
+.table-striped>tbody>tr:nth-of-type(4n+1) {
+    background-color: #f9f9f9 !important;
+}
+
+.table>tbody>tr>td {
+  border-top: none !important;
+}
+
+.table>tbody>tr:nth-of-type(2n)>td {
+  border-top: 1px solid #ddd !important;
+}
+
+.hiddenRow .well {
+  border-top: none;
+  border-top-left-radius: 0px;
+  -moz-border-top-left-radius: 0px;
+  -webkit-border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  -moz-border-top-right-radius: 0px;
+  -webkit-border-top-right-radius: 0px;
+}
+
+td>div[class="collapse"]{
+  border:none !important;
+  border-top: 1px solid #ddd !important;
+}
+
+.hiddenRow .well {
+  margin: 0 1em 0.5em 1em;
 }
