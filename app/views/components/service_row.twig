@@ -30,17 +30,18 @@
         ...
       </div>
     </div>
-  </tr>
-</td>
-<script defer>
-var elem = "#collapse{{ service.name|escape('js') }}";
-$(elem).on( {
-  'show.bs.collapse': function (event) {
-    $(this).closest('tr').nextAll('tr').first().children('td').attr('style', 'border-top: 1px solid #ddd !important');
-  },
-  'hidden.bs.collapse': function (event) {
-    $(this).closest('tr').nextAll('tr').first().children('td').attr('style', 'border-top: none');
-  }
-} );
-</script>
+  </td>
+  <script defer>
+    var elem = "#collapse{{ service.name|escape('js') }}";
+    $(elem).on( {
+      'show.bs.collapse': function (event) {
+        //Commented this out temporarily until I can make the borders go under eachother...
+        //$(this).closest('tr').nextAll('tr').first().children('td').attr('style', 'border-top: 1px solid #ddd !important');
+      },
+      'hidden.bs.collapse': function (event) {
+        $(this).closest('tr').nextAll('tr').first().children('td').attr('style', 'border-top: none');
+      }
+    } );
+  </script>
+</tr>
 {% endif %}

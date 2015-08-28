@@ -29,4 +29,11 @@
   </div>
 </div>
 
+<script defer>
+$('.collapse').on('show.bs.collapse', function () {
+    $('.collapse.in').collapse('hide');
+    $('.collapsing[aria-expanded="false"]').collapse('hide');
+});
+</script>
+
 {% endblock %}
