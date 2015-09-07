@@ -1,0 +1,17 @@
+<h2 id="{{ service.name }}">
+  {{ service.name|default('Name') }}
+</h2>
+
+{% if service.status is defined %}
+<a role="button" class="btn btn-xs btn-{{ service.status.style|default("default") }}" 
+  href="{{ service.link|default("#") }}"
+  aria-label="">
+  <span class="glyphicon glyphicon-{{ service.status.icon|default('question-sign') }}" 
+    aria-hidden="true"></span> {{ service.status.text|default('Unknown') }}
+</a>
+{% endif %}
+
+{% block content %}
+...
+{% endblock content %}
+

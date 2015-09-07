@@ -4,27 +4,40 @@
 
 {% block body %}
 
-<div class="container-fluid">
+{% include "components/navbar.twig" %}
+
+<div class="container">
   <div class="row">
-    <div class="col-md-3">
-      {#{{ panel('Title', 'Body') }}#}
-    </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
+      <div class="panel panel-default affix" id="service-panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">Services</h3>
+        </div>
+        <div class="panel-body">
       <table class="table table-striped table-condensed">
-        <thead>
-          <tr>
-            {% include "components/service_row.twig" with {'do_header': true} %}
-          </tr>
-        </thead>
         <tbody>
         {% for service in services %}
-          {% include "components/service_row.twig" %}
+          {% embed "components/service_row.twig" %}
+            {% block content %}
+              {{ service.machine.name }}
+            {% endblock content %}
+          {% endembed %}
         {% endfor %}
         </tbody>
       </table>
+        </div>
+      </div>
     </div>
-    <div class="col-md-3">
-      {#{{ panel('Title', 'Body') }}#}
+    <div class="col-md-8">
+      {% for service in services %}
+        <div class="row">
+          {% embed "components/service_panel.twig" %}
+            {% block content %}
+              {{ service.body|raw|default("Testing") }}
+            {% endblock content %}
+          {% endembed %}
+        </div>
+      {% endfor %}
     </div>
   </div>
 </div>
@@ -33,6 +46,27 @@
 $('.collapse').on('show.bs.collapse', function () {
     $('.collapse.in').collapse('hide');
     $('.collapsing[aria-expanded="false"]').collapse('hide');
+});
+{#$('#service-panel table').find('.accordion-body').first().collapse('show');#}
+$("a[href^='#']").on('click', function(e) {
+  console.log("On Click!");
+
+   // prevent default anchor click behavior
+   e.preventDefault();
+
+   // store hash
+   var hash = this.hash;
+
+   // animate
+   $('html, body').animate({
+       scrollTop: $(hash).offset().top
+     }, 500, function(){
+
+       // when done, add hash to url
+       // (default click behaviour)
+       {#window.location.hash = hash;#}
+     });
+
 });
 </script>
 

@@ -1,47 +1,25 @@
-{% set el = do_header is defined ? 'th' : 'td' %}
-<tr class="vert-align">
-  <{{el}}>{{ service.name|default('Name') }}</{{el}}>
-  {#<{{el}}>{{ service.machine.name|default('Machine') }}</{{el}}>#}
-  {#<{{el}}>{{ service.machine.ip|default('IP') }}</{{el}}>#}
-  <{{el}} class="colShrink">
-    {% if service.status is defined %}
-    <a role="button" class="btn btn-xs btn-{{ service.status.style|default("default") }}" 
-      href="{{ service.link|default("#") }}"
-      aria-label="">
-      <span class="glyphicon glyphicon-{{ service.status.icon|default('question-sign') }}" 
-        aria-hidden="true"></span> {{ service.status.text|default('Unknown') }}
-    </a>
-    {% endif %}
-  </{{el}}>
-  <{{el}} class="colShrink">
-    {% if service.status is defined %}
-    <button class="btn btn-xs btn-brimary" type="button" data-toggle="collapse" 
-      data-target="#collapse{{ service.name }}" aria-expanded="false" aria-controls="collapse">
-      <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-    </button>
-    {% endif %}
-  </{{el}}>
-</tr>
-{% if service.status is defined %}
-<tr class="hiddenRow">
-  <td colspan="4">
-    <div class="collapse accordion-body" id="collapse{{service.name}}">
-      <div class="well">
-        ...
-      </div>
-    </div>
+<tr class="">
+  <td>
+    <a href="#{{ service.name }}">{{ service.name|default('Name') }}</a>
   </td>
-  <script defer>
-    var elem = "#collapse{{ service.name|escape('js') }}";
-    $(elem).on( {
-      'show.bs.collapse': function (event) {
-        //Commented this out temporarily until I can make the borders go under eachother...
-        //$(this).closest('tr').nextAll('tr').first().children('td').attr('style', 'border-top: 1px solid #ddd !important');
-      },
-      'hidden.bs.collapse': function (event) {
-        $(this).closest('tr').nextAll('tr').first().children('td').attr('style', 'border-top: none');
-      }
-    } );
-  </script>
+  <td class="">
+    {% if service.status is defined %}
+    <div class="btn-flex pull-right">
+      {{ spaceless }}
+
+      {% if service.extended %}
+      <a class="badge glyphicon glyphicon-plus btn-bubble-left" aria-hidden="true"
+        href="#{{ service.name }}"> </a>
+      {% endif %}
+
+      <a role="button" class="btn btn-xs btn-{{ service.status.style|default("default") }}" 
+        href="{{ service.link|default("#") }}" aria-label="">
+        <span class="glyphicon glyphicon-{{ service.status.icon|default('question-sign') }}" 
+          aria-hidden="true"></span> {{ service.status.text|default('Unknown') }}
+      </a>
+
+      {{ endspaceless }}
+    </div>
+    {% endif %}
+  </td>
 </tr>
-{% endif %}

@@ -19,6 +19,9 @@ require '../app/config.php';
 require '../app/includes.php';
 require '../app/routes.php';
 
+//echo phpinfo();
+//echo xdebug_get_profiler_filename();
+
 $app->run();
 
 ?>

@@ -2,12 +2,14 @@
 require_once 'utils.php';
 require_once 'models/service.php';
 
-$service_ini = parse_ini_file('../config.ini', true);
+$string = file_get_contents("../json.json", true);
+$json_a = json_decode($string, true);
 
-$machines = $service_ini['Machines'];
-unset($service_ini['Machines']);
+$machines_json = $json_a["machines"];
+$services_json = $json_a["services"];
+unset($services_json['Machines']);
 
-$services = Service::from_ini($machines, $service_ini);
+$services = Service::from_ini($machines_json, $services_json);
 
 $app->get('/', function () use ($app, $js_sources, $css_sources, $services) {
 

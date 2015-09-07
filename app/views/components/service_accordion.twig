@@ -1,0 +1,53 @@
+{% set el = do_header is defined ? 'th' : 'td' %}
+<tr class="vert-align">
+  <td>
+    <a href="#{{ service.name }}">{{ service.name|default('Name') }}</a>
+      <span class="badge glyphicon glyphicon-plus" aria-hidden="true"> </span>
+  </td>
+  {#<td>{{ service.machine.name|default('Machine') }}</td>#}
+  {#<td>{{ service.machine.ip|default('IP') }}</td>#}
+  <td class="colShrink">
+    {% if service.status is defined %}
+    <a role="button" class="btn btn-xs btn-{{ service.status.style|default("default") }}" 
+      href="{{ service.link|default("#") }}"
+      aria-label="">
+      <span class="glyphicon glyphicon-{{ service.status.icon|default('question-sign') }}" 
+        aria-hidden="true"></span> {{ service.status.text|default('Unknown') }}
+    </a>
+    {% endif %}
+  </td>
+  <td class="colShrink">
+    {% if service.status is defined %}
+    <button class="btn btn-xs btn-brimary" type="button" data-toggle="collapse" 
+      data-target="#collapse{{ service.name }}" aria-expanded="false" aria-controls="collapse">
+      <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+    </button>
+    {% endif %}
+  </td>
+</tr>
+{% if service.status is defined %}
+<tr class="hidden-row">
+  <td colspan="4">
+    <div class="collapse accordion-body" id="collapse{{service.name}}">
+      <div class="well">
+        {% block content %}
+        ...
+        {% endblock content %}
+      </div>
+    </div>
+  </td>
+  <script defer>
+    {#var elem = "#collapse{{ service.name|escape('js') }}";
+    $(elem).on( {
+      'show.bs.collapse': function (event) {
+        //Commented this out temporarily until I can make the borders go under eachother...
+        $(this).closest('tr').nextAll('tr').first().children('td').attr('style',
+          'border-top: 1px solid #ddd !important; padding-top: 1em-1px !important');
+      },
+      'hidden.bs.collapse': function (event) {
+        $(this).closest('tr').nextAll('tr').first().children('td').attr('style', 'border-top: none');
+      }
+    } );#}
+  </script>
+</tr>
+{% endif %}
