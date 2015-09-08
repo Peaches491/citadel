@@ -1,0 +1,7 @@
+{{ spaceless }}
+<button role="button" class="btn btn-{{ service.status.style|default("default") }} btn-{{ size|default("md") }}" 
+  href="{{ service.link|default("#") }}" aria-label="">
+  <span class="glyphicon glyphicon-{{ service.status.icon|default('question-sign') }}" 
+    aria-hidden="true"></span> {{ service.status.text|default('Unknown') }}
+</button>
+{{ endspaceless }}

@@ -12,11 +12,7 @@
         href="#{{ service.name }}"> </a>
       {% endif %}
 
-      <a role="button" class="btn btn-xs btn-{{ service.status.style|default("default") }}" 
-        href="{{ service.link|default("#") }}" aria-label="">
-        <span class="glyphicon glyphicon-{{ service.status.icon|default('question-sign') }}" 
-          aria-hidden="true"></span> {{ service.status.text|default('Unknown') }}
-      </a>
+      {% include "components/status_button.twig" with {'size' : 'xs'} %}
 
       {{ endspaceless }}
     </div>

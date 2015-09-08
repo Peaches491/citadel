@@ -69,7 +69,7 @@ td>div[class="collapse"]{
   border-bottom-right-radius: 0;
 }
 
-.btn-bubble-left+a {
+.btn-bubble-left+button {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }

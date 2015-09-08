@@ -15,7 +15,7 @@
     {
       "name": "Sonarr",
       "machine": "WebServer",
-      "port": 9090
+      "port": 8989
     },{
       "name": "CouchPotato",
       "machine": "WebServer",

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__.'/../utils.php';
 require_once 'status.php';
+require_once 'custom/FreeNAS.php';
 
 class Service
 {
@@ -15,9 +16,21 @@ class Service
   var $body = "";
   var $extended = false;
 
-  function __construct() {
+  function __construct($machines, $srv_arr) {
     $this->status = Status::to_array(Status::UNKNOWN);
     $this->body = simplexml_load_file('http://www.lipsum.com/feed/xml?amount=2&what=paras&start=0')->lipsum;
+    $this->name = $srv_arr["name"];
+    $this->machine = [
+      'name' => $srv_arr['machine'],
+      'ip' => $machines[$srv_arr['machine']]
+    ];
+    if(array_key_exists('port', $srv_arr)) $this->port = $srv_arr['port'];
+    if(array_key_exists('https', $srv_arr)) $this->https = true;
+    if($this->https) {
+      $this->link = 'https://' . $this->machine['ip'] . ':' . $this->port;
+    } else {
+      $this->link = 'http://' . $this->machine['ip'] . ':' . $this->port;
+    }
   }
 
   function evaluate_status() {
@@ -37,20 +50,14 @@ class Service
   static function from_ini($machines, $service_ini) {
     $services = [];
     foreach ($service_ini as $srv_arr) {
-      $srv = new Service();
-      $srv->name = $srv_arr["name"];
-      $srv->machine = [
-        'name' => $srv_arr['machine'], 
-        'ip' => $machines[$srv_arr['machine']]
-      ];
-      if(array_key_exists('port', $srv_arr)) $srv->port = $srv_arr['port'];
-      if(array_key_exists('https', $srv_arr)) $srv->https = true;
-      if($srv->https) {
-        $srv->link = 'https://' . $srv->machine['ip'] . ':' . $srv->port;
-      } else {
-        $srv->link = 'http://' . $srv->machine['ip'] . ':' . $srv->port;
+      switch($srv_arr['type']) {
+        case 'FreeNAS':
+          $srv = new FreeNAS($machines, $srv_arr);
+          break;
+        default:
+          $srv = new Service($machines, $srv_arr);
+          break;
       }
-      $srv->extended = array_key_exists('type', $srv_arr);
       $services[] = $srv;
     }
     return $services;

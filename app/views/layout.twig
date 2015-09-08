@@ -29,11 +29,13 @@
       </div>
     </div>
     <div class="col-md-8">
-      {% for service in services %}
+      {% for service in services if service.extended %}
         <div class="row">
           {% embed "components/service_panel.twig" %}
             {% block content %}
-              {{ service.body|raw|default("Testing") }}
+              {% if service.content_template %}
+                {% include(service.content_template) %}
+              {% endif %}
             {% endblock content %}
           {% endembed %}
         </div>
