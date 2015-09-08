@@ -8,7 +8,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4" id="leftcolumn">
       <div class="panel panel-default affix" id="service-panel">
         <div class="panel-heading">
           <h3 class="panel-title">Services</h3>
@@ -70,6 +70,11 @@ $("a[href^='#']").on('click', function(e) {
      });
 
 });
+$( window ).resize( function(event) {
+  var sideBarNavWidth=$('#leftcolumn').width() - parseInt($('#service-panel').css('padding-left')) - parseInt($('#service-panel').css('padding-right'));
+  $('#service-panel').css('width', sideBarNavWidth);
+});
+$('#service-panel').resize();
 </script>
 
 {% endblock %}
