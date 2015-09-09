@@ -33,7 +33,11 @@
     },{
       "name": "FreeNAS",
       "machine": "FreeNAS",
-      "type": "FreeNAS"
+      "type": "FreeNAS",
+      "auth": {
+          "username": "root",
+          "password": "password"
+      }
     },{
       "name": "PXEServer",
       "machine": "PXEServer",

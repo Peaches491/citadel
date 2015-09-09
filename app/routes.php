@@ -2,7 +2,7 @@
 require_once 'utils.php';
 require_once 'models/service.php';
 
-$string = file_get_contents("../json.json", true);
+$string = file_get_contents("../config.json", true);
 $json_a = json_decode($string, true);
 
 $machines_json = $json_a["machines"];
