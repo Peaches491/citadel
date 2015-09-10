@@ -13,7 +13,10 @@ $view->parserOptions = array(
 );
 $view->parserExtensions = array(
     new \Slim\Views\TwigExtension(),
+    //new Twig_Extensions_Extension_Number()
 );
+$twig = $app->view->getInstance();
+$twig->addExtension(new Twig_Extensions_Extension_Number());
 
 require '../app/config.php';
 require '../app/includes.php';

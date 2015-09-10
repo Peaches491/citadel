@@ -7,6 +7,7 @@
 {% include "components/navbar.twig" %}
 
 <div class="container">
+  <div class="col-md-12">
   <div class="row">
     <div class="col-md-4" id="leftcolumn">
       <div class="panel panel-default affix" id="service-panel">
@@ -30,7 +31,6 @@
     </div>
     <div class="col-md-8">
       {% for service in services if service.extended %}
-        <div class="row">
           {% embed "components/service_panel.twig" %}
             {% block content %}
               {% if service.content_template %}
@@ -38,9 +38,9 @@
               {% endif %}
             {% endblock content %}
           {% endembed %}
-        </div>
       {% endfor %}
     </div>
+  </div>
   </div>
 </div>
 
@@ -51,8 +51,6 @@ $('.collapse').on('show.bs.collapse', function () {
 });
 {#$('#service-panel table').find('.accordion-body').first().collapse('show');#}
 $("a[href^='#']").on('click', function(e) {
-  console.log("On Click!");
-
    // prevent default anchor click behavior
    e.preventDefault();
 
@@ -63,7 +61,6 @@ $("a[href^='#']").on('click', function(e) {
    $('html, body').animate({
        scrollTop: $(hash).offset().top
      }, 500, function(){
-
        // when done, add hash to url
        // (default click behaviour)
        {#window.location.hash = hash;#}
@@ -71,7 +68,7 @@ $("a[href^='#']").on('click', function(e) {
 
 });
 $( window ).resize( function(event) {
-  var sideBarNavWidth=$('#leftcolumn').width() - parseInt($('#service-panel').css('padding-left')) - parseInt($('#service-panel').css('padding-right'));
+  var sideBarNavWidth=$('#leftcolumn').width() - parseInt($('#leftcolumn').css('padding-left')) - parseInt($('#leftcolumn').css('padding-right'));
   $('#service-panel').css('width', sideBarNavWidth);
 });
 $('#service-panel').resize();

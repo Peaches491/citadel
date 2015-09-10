@@ -10,6 +10,22 @@ td.colShrink {
   width: 1px;
 }
 
+td.colGrow {
+  width: 100%;
+}
+
+table .noWrap {
+  white-space: nowrap;
+}
+
+.table-condensed .progress {
+  margin-bottom: inherit;
+}
+
+.borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
+    border: none;
+}
+
 /*.hidden-row td {
   padding: 0 !important;
   [>border-top: none !important;<]
@@ -78,4 +94,16 @@ td>div[class="collapse"]{
   .affix {
     position: static;
   }
+}
+
+.service-header {
+  border-bottom: 1px solid #ddd;
+}
+
+.service-header h2{
+  margin-bottom: 5px;
+}
+
+.service-header .btn {
+  vertical-align: top;
 }

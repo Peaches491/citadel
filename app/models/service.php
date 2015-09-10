@@ -15,6 +15,8 @@ class Service
   var $link = "";
   var $body = "";
   var $extended = false;
+  var $auth = false;
+  var $https = false;
 
   function __construct($machines, $srv_arr) {
     $this->status = Status::to_array(Status::UNKNOWN);
@@ -23,14 +25,19 @@ class Service
     $this->machine = [
       'name' => $srv_arr['machine'],
       'ip' => $machines[$srv_arr['machine']]
-    ];
-    if(array_key_exists('port', $srv_arr)) $this->port = $srv_arr['port'];
-    if(array_key_exists('https', $srv_arr)) $this->https = true;
-    if($this->https) {
+    ]; if(array_key_exists('port', $srv_arr)) $this->port = $srv_arr['port']; if(array_key_exists('https', $srv_arr)) $this->https = true; if($this->https) {
       $this->link = 'https://' . $this->machine['ip'] . ':' . $this->port;
     } else {
       $this->link = 'http://' . $this->machine['ip'] . ':' . $this->port;
     }
+
+    if(array_key_exists('auth', $srv_arr)) {
+      $this->auth = $srv_arr['auth'];
+    }
+  }
+
+  function evaluate_content() {
+    $this->content = $this->get_content();
   }
 
   function evaluate_status() {
@@ -47,10 +54,33 @@ class Service
     }
   }
 
+  function get_url($path) {
+    if($this->https) {
+      $url = "https://";
+    } else {
+      $url = "http://";
+    }
+    if($this->auth) {
+      $url = $url.$this->auth['username'].":".$this->auth['password']."@";
+    }
+    $url = $url.$this->machine['ip'];
+    $url = $url.$path;
+
+    return $url;
+  }
+
+  function get_content() {
+    return [];
+  }
+
   static function from_ini($machines, $service_ini) {
     $services = [];
     foreach ($service_ini as $srv_arr) {
-      switch($srv_arr['type']) {
+      unset($type);
+      $type = false;
+      if( array_key_exists('type', $srv_arr))
+        $type = $srv_arr['type'];
+      switch($type ?: 'none') {
         case 'FreeNAS':
           $srv = new FreeNAS($machines, $srv_arr);
           break;

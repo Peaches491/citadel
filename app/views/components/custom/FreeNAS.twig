@@ -1,1 +1,73 @@
-Testing 1234!
+{% for alert in service.content.alerts if not alert.dismissed %}
+<div class="col-md-12">
+  <div class="alert {%spaceless%}alert-{% if alert.level == 'OK' %}success
+  {% elseif alert.level == 'WARN' %}warning
+  {% elseif alert.level == 'CRIT' %}danger
+  {% else %}info{% endif %}
+  {% endspaceless %}" role="alert">
+    {{ alert.message }}
+  </div>
+</div>
+{% endfor %}
+
+<h4>Volumes</h4>
+
+<table class="table borderless table-condensed">
+{% for volume in service.content.volumes %}
+<tr>
+  <th scope="row" class="noWrap">
+    {{ volume.name }}
+  </th>
+  <td class="noWrap">
+    {{ volume.status }}
+  </td>
+  <td class="noWrap">
+    {{ volume.status }}
+  </td>
+  <td class="colGrow">
+    {% set pct = volume.children[0].used_pct %}
+    <div class="progress">
+      <div class="progress-bar
+        {% if pct >= 80 %} progress-bar-warning
+        {% elseif volume.status != "HEALTHY" %} progress-bar-danger
+        {% endif %}
+        " role="progressbar" 
+        aria-valuenow="{{pct}}"
+        aria-valuemin="0" aria-valuemax="100"
+        style="width: {{pct}}%; min-width: 2em;">
+        <span class="sr-only">{{pct}}% Full</span>
+        {{pct}}%
+      </div>
+    </div>
+  </td>
+</tr>
+{% endfor %}
+</table>
+
+<h4>Disks</h4>
+<table class="table borderless table-condensed">
+{% for disk in service.content.disks %}
+<tr>
+  <th scope="row" class="noWrap">
+    {{ disk.disk_name }}
+  </th>
+  <td class="noWrap">
+    {{ disk.disk_serial }}
+  </td>
+  <td class="noWrap">
+    {{ disk.disk_size|format_bytes(false) }}
+  </td>
+  <td class="colGrow">
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" 
+        aria-valuenow="{{pct}}"
+        aria-valuemin="0" aria-valuemax="100"
+        style="width: {{pct}}%;">
+        <span class="sr-only">60% Complete</span>
+      </div>
+    </div>
+  </td>
+</tr>
+{% endfor %}
+</table>
+

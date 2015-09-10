@@ -7,8 +7,8 @@
     static function ping($url) {
       if($url == NULL) return false;
       $ch = curl_init($url);
-      curl_setopt($ch, CURLOPT_TIMEOUT, 1);
-      curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
+      curl_setopt($ch, CURLOPT_TIMEOUT, 0.2);
+      curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0.2);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
       curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
@@ -56,12 +56,14 @@
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($curl, CURLOPT_USERAGENT, Utils::agent);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 0.2);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 0.2);
     
         $result = curl_exec($curl);
     
         curl_close($curl);
         if($result != false) {
-          $result = json_decode($result);
+          $result = json_decode($result, true);
         } 
         return $result;
     }

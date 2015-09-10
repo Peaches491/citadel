@@ -15,10 +15,11 @@ $app->get('/', function () use ($app, $js_sources, $css_sources, $services) {
 
   foreach($services as &$srv) {
     $srv->evaluate_status();
+    $srv->evaluate_content();
   }
 
   $app->render('layout.twig', array(
-    'title' => 'Home Base',
+    'title' => 'Citadel',
     'js' => $js_sources,
     'css' => $css_sources,
     'services' => $services
