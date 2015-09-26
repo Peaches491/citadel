@@ -10,41 +10,160 @@
 </div>
 {% endfor %}
 
+
+
 <h4>Volumes</h4>
+{% if service.content.volumes %}
+{% for volume in service.content.volumes %}
+<div class="col-md-12">
+  <div class="row pad-bottom-small">
+    <div class="col-md-4">
+    <strong>{{ volume.name }}</strong>
+    {{ volume.status }}
+    </div>
+  
+    <div class="col-md-8 text-right-md">
+      <span class="noWrap pad-right-small">Actual: {{ volume.children[0].used|format_bytes(false) }} / {{ (volume.children[0].avail + volume.children[0].used) | format_bytes(false) }} </span>
+      <span class="noWrap">Raw: {{ volume.used|format_bytes(false) }} / {{ (volume.avail + volume.used) | format_bytes(false) }}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      {% set pct = volume.children[0].used_pct %}
+      <div class="progress">
+        <div class="progress-bar
+          {% if pct >= 80 %} progress-bar-warning
+          {% elseif volume.status != "HEALTHY" %} progress-bar-danger
+          {% endif %}
+          " role="progressbar"
+          aria-valuenow="{{pct}}"
+          aria-valuemin="0" aria-valuemax="100"
+          style="width: {{pct}}%; min-width: 2em;">
+          <span class="sr-only">{{pct}}% Full</span>
+          {{pct}}%
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="col-md-12 text-center">
+  No volumes found!
+</div>
+{% endif %}
+
+
+{% macro dataset_row(object, indent) %}
+{% for volume in object %}
+<div class="table-indent-{{indent}}">
+<div class="col-md-12">
+  <div class="row ">
+    <div class="col-xs-4">
+      <strong>{{ volume.name }}</strong><a class="btn btn-xs" role="button"
+        data-toggle="collapse" href="#" aria-expanded="false"
+        aria-controls="dataset-{{volume.name}}" data-target="#dataset-{{volume.name}}">
+        <span class="caret"/>
+      </a>
+    </div>
+    <div class="col-xs-8 text-right">
+      <span class="noWrap pad-right-small">Used: {{ volume.used|format_bytes(false) }}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 ">
+      <div class="progress">
+        <div class="progress-bar"
+          role="progressbar"
+          aria-valuenow="{{volume.used_pct}}"
+          aria-valuemin="0" aria-valuemax="100"
+          style="width: {{volume.used_pct}}%; min-width: 2em;">
+          <span class="sr-only">{{volume.used_pct}}% Full</span>
+          {{volume.used_pct}}%
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="collapse" id="dataset-{{volume.name}}">
+{{ _self.dataset_row(volume.children, indent+1) }}
+</div>
+{% endfor %}
+{% endmacro %}
+
+<h4>Datasets<a class="btn btn-xs" role="button"
+    data-toggle="collapse" href="#" aria-expanded="false"
+    aria-controls="collapseDatasets" data-target="#collapseDatasets">
+    <span class="caret"></span></span></a></h4>
+<div class="collapse" id="collapseDatasets">
+{% if service.content.volumes %}
+{% import _self as macros %}
+{{ macros.dataset_row(service.content.volumes[0].children[0].children, 0) }}
+{% else %}
+<div class="col-md-12 text-center">
+  No datasets found!
+</div>
+{% endif %}
+</div>
+
+
+
+{% macro dev_row(info, indent) %}
+<tr>
+  <th scope="row" class="noWrap">
+    <span class="table-indent-{{indent}}"> </span>
+    <span>{{ info.name }}</span>
+  </th>
+  <td class="noWrap">
+    {{ info.status }}
+  </td>
+  <td class="noWrap">
+    {{ info.cksum }}
+  </td>
+  <td class="noWrap">
+    {{ info.read }}
+  </td>
+  <td class="noWrap">
+    {{ info.write }}
+  </td>
+  <td class="colGrow"></td>
+</tr>
+{% endmacro %}
+
+<div class="row">
+<div class="col-sm-6 col-xs-12">
+<h4>VDevs</h4>
+{% if service.content.disks %}
+{% import _self as macros %}
 
 <table class="table borderless table-condensed">
 {% for volume in service.content.volumes %}
-<tr>
-  <th scope="row" class="noWrap">
-    {{ volume.name }}
-  </th>
-  <td class="noWrap">
-    {{ volume.status }}
-  </td>
-  <td class="noWrap">
-    {{ volume.status }}
-  </td>
-  <td class="colGrow">
-    {% set pct = volume.children[0].used_pct %}
-    <div class="progress">
-      <div class="progress-bar
-        {% if pct >= 80 %} progress-bar-warning
-        {% elseif volume.status != "HEALTHY" %} progress-bar-danger
-        {% endif %}
-        " role="progressbar" 
-        aria-valuenow="{{pct}}"
-        aria-valuemin="0" aria-valuemax="100"
-        style="width: {{pct}}%; min-width: 2em;">
-        <span class="sr-only">{{pct}}% Full</span>
-        {{pct}}%
-      </div>
-    </div>
-  </td>
-</tr>
+{{ macros.dev_row(volume.vdev_status, 0) }}
+
+{% for vdev in volume.vdev_status.children %}
+{{ macros.dev_row(vdev, 1) }}
+
+{% for dev in vdev.children %}
+{{ macros.dev_row(dev, 2) }}
+
+{% endfor %}
+{% endfor %}
 {% endfor %}
 </table>
+{% else %}
+<div class="col-sm-6 col-xs-12 text-center">
+  No disks found!
+</div>
+{% endif %}
+</div>
 
+
+
+<div class="col-sm-6 col-xs-12">
 <h4>Disks</h4>
+{% if service.content.disks %}
+
 <table class="table borderless table-condensed">
 {% for disk in service.content.disks %}
 <tr>
@@ -58,16 +177,22 @@
     {{ disk.disk_size|format_bytes(false) }}
   </td>
   <td class="colGrow">
-    <div class="progress">
-      <div class="progress-bar" role="progressbar" 
+    {#<div class="progress">
+      <div class="progress-bar" role="progressbar"
         aria-valuenow="{{pct}}"
         aria-valuemin="0" aria-valuemax="100"
         style="width: {{pct}}%;">
         <span class="sr-only">60% Complete</span>
       </div>
-    </div>
+    </div>#}
   </td>
 </tr>
 {% endfor %}
 </table>
-
+{% else %}
+<div class="col-sm-6 col-xs-12 text-center">
+  No disks found!
+</div>
+{% endif %}
+</div>
+</div>

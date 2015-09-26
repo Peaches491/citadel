@@ -1,1 +1,1 @@
-Requires `php5-curl`
+Requires `php5-curl` `nginx`

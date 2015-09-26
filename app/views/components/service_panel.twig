@@ -1,14 +1,16 @@
 {% spaceless %}
 <div class="row service-header">
-<h2 id="{{ service.name }}">
-  {{ service.name|trim|default('Name') }}
-  <span class="pull-right">
-    {% if service.status is defined %}
-      {% include "components/status_button.twig" with {'size' : 'sm'} %}
-    {% endif %}
-  </span>
-</h2>
-
+  <h2 id="{{ service.name }}">
+    {{ service.name|trim|default('Name') }}
+    <span class="pull-right">
+      {% if service.status is defined %}
+        {% include "components/status_button.twig" with {'size' : 'sm'} %}
+      {% endif %}
+    </span>
+    <small>
+{{ service.content.subtitle }}
+    </small>
+  </h2>
 </div>
 {% endspaceless %}
 

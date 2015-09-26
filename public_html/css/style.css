@@ -10,11 +10,11 @@ td.colShrink {
   width: 1px;
 }
 
-td.colGrow {
+.colGrow {
   width: 100%;
 }
 
-table .noWrap {
+.noWrap {
   white-space: nowrap;
 }
 
@@ -25,46 +25,6 @@ table .noWrap {
 .borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
     border: none;
 }
-
-/*.hidden-row td {
-  padding: 0 !important;
-  [>border-top: none !important;<]
-  margin-bottom: -1px !important;
-}
-
-.table-striped>tbody>tr {
-  background-color: white !important;
-}
-
-.table-striped>tbody>tr:nth-of-type(4n-1) {
-    background-color: #f9f9f9 !important;
-}
-
-.table>tbody>tr>td {
-  border-top: none !important;
-}
-
-.table>tbody>tr:nth-of-type(2n)>td {
-  border-top: 1px solid #ddd !important;
-}
-
-.hidden-row .well {
-  border-top: none;
-  border-radius: 0px;
-}
-
-.hidden-row:not(:last-child) .well {
-  border-bottom: none;
-}
-
-td>div[class="collapse"]{
-  border:none !important;
-  border-top: 1px solid #ddd !important;
-}
-
-.hidden-row .well {
-  margin: 0 20px 0 20px;
-}*/
 
 #service-panel .panel-body {
   padding: 0;
@@ -90,14 +50,33 @@ td>div[class="collapse"]{
   border-bottom-left-radius: 0;
 }
 
+.pad-bottom-small {
+  padding-bottom: 5px;
+}
+
+.pad-right-small {
+  padding-right: 5px;
+}
+
 @media (max-width: 992px) {
   .affix {
     position: static;
+    width: auto !important;
+  }
+  .text-right-md {
+    text-align: right;
+  }
+}
+
+@media (min-width: 992px) {
+  .text-right-md {
+    text-align: right;
   }
 }
 
 .service-header {
   border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
 }
 
 .service-header h2{
@@ -106,4 +85,16 @@ td>div[class="collapse"]{
 
 .service-header .btn {
   vertical-align: top;
+}
+
+.table-indent-1 {
+  padding-left: 25px;
+}
+
+.table-indent-2 {
+  padding-left: 50px;
+}
+
+.collapsing {
+  transition: height 1.5s;
 }

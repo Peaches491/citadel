@@ -1,0 +1,33 @@
+{% macro SEFormat(episode) %}
+{{ "S%02dE%02d"|format(episode.seasonNumber, episode.episodeNumber) }}
+{% endmacro %}
+
+{% import _self as macros %}
+
+<div class="col-xs-12">
+  <div class="row">
+    <h4>Upcoming</h4>
+  </div>
+  <div class="col-xs-12">
+    {% for item in service.content.calendar %}
+    <div class="row">
+      {{ macros.SEFormat(item) }} <strong>{{ item.series.title }}</strong> - {{ item.title }}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<hr/>
+
+<div class="col-xs-12">
+  <div class="row">
+    <h4>Recently Downloaded</h4>
+  </div>
+  <div class="col-xs-12">
+    {% for item in service.content.history.records %}
+    <div class="row">
+      {{ macros.SEFormat(item.episode) }} <strong>{{ item.series.title }}</strong> - {{ item.episode.title }}
+    </div>
+    {% endfor %}
+  </div>
+</div>
