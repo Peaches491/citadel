@@ -18,6 +18,7 @@ $view->parserExtensions = array(
 $twig = $app->view->getInstance();
 $twig->addExtension(new Twig_Extensions_Extension_Number());
 
+require '../app/utils.php';
 require '../app/config.php';
 require '../app/includes.php';
 require '../app/routes.php';
@@ -30,6 +31,12 @@ if (!count($mcd->getServerList())) {
 
 //echo phpinfo();
 //echo xdebug_get_profiler_filename();
+
+global $mobile;
+$mobile = false;
+if(Utils::is_mobile()) {
+  $mobile = true;
+}
 
 $app->run();
 

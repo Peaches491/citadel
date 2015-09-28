@@ -98,3 +98,20 @@ td.colShrink {
 .collapsing {
   transition: height 1.5s;
 }
+
+.progress-no-margin {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.progress-small {
+  height: 8px;
+  margin-top: 6px;
+  margin-bottom: 0px;
+  vertical-align: center;
+}
+
+.sonarr-warning {
+  color: #f0ad4e;
+} 
+

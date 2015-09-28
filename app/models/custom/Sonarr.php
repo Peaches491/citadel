@@ -44,11 +44,16 @@ class Sonarr extends Service
     $rest = Utils::rest_call($this->get_url("/api/history"),
       ['apikey' => $this->api_key,
        'page' => 1,
-       'pageSize' => 50,
+       'pageSize' => 10,
        'sortKey' => 'date',
        'sortDir' => 'desc']);
     if( $rest ) {
       $this->content['history'] = $rest;
+    }
+
+    $rest = Utils::rest_call($this->get_url("/api/queue"), ['apikey' => $this->api_key]);
+    if( $rest ) {
+      $this->content['queue'] = $rest;
     }
 
     return $this->content;

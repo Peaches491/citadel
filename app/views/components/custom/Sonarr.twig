@@ -2,6 +2,12 @@
 {{ "S%02dE%02d"|format(episode.seasonNumber, episode.episodeNumber) }}
 {% endmacro %}
 
+{% macro episodeBlock(item) %}
+{% import _self as macros %}
+<span class="noWrap">{{ macros.SEFormat(item.episode) }}</span>
+<span class="noWrap"><strong>{{ item.series.title }}</strong> - </span>
+<span class="noWrap">{{ item.episode.title }}</span>
+{% endmacro %}
 {% import _self as macros %}
 
 <div class="col-xs-12">
@@ -10,24 +16,118 @@
   </div>
   <div class="col-xs-12">
     {% for item in service.content.calendar %}
+    {% if loop.index <= 5 %}
     <div class="row">
       {{ macros.SEFormat(item) }} <strong>{{ item.series.title }}</strong> - {{ item.title }}
+      {#{{ macros.episodeBlock(item) }}#}
     </div>
+    {% endif %}
     {% endfor %}
   </div>
 </div>
-
 <hr/>
+
 
 <div class="col-xs-12">
   <div class="row">
-    <h4>Recently Downloaded</h4>
+    <h4>Queue</h4>
+  </div>
+
+  {% if service.content.queue|length == 0 %}
+  No queued items!
+  {% else %}
+  <div class="row">
+    {% for item in service.content.queue %}
+      <div class="col-md-10">
+        <span class="glyphicon
+        {% if item.status == 'Completed' %}
+          glyphicon-hdd
+          {#text-danger#}
+        {% else %}
+          glyphicon-cloud-download
+          {#sonarr-warning#}
+        {% endif %}
+        ">
+      </span>
+        {{ macros.episodeBlock(item) }}
+      </div>
+      <div class="col-md-2">
+        <div class="progress progress-no-margin
+          {% if item.status == "Downloading"
+             or item.status == "Paused"
+             or item.status == "Queued" %}
+          progress-small
+          {% endif %}
+          ">
+          {% set percent = ((item.size - item.sizeleft)*100 / item.size) %}
+          <div class="progress-bar
+            {% if item.status == 'Completed' %}
+              progress-bar-striped
+              progress-bar-warning
+            {% elseif item.status == 'Paused' %}
+              progress-bar-striped
+              progress-bar-warning
+            {% elseif item.status == 'Queued' %}
+              progress-bar-striped
+              active
+            {% elseif item.status == 'Downloading' %}
+              progress-bar-success
+              progress-bar-striped
+              active
+            {% else %}
+              progress-bar-danger
+            {% endif %}
+            "
+            role="progressbar"
+            data-toggle="tooltip" data-placement="{% spaceless %}
+              {% if client.is_mobile %} top 
+              {% else %} left 
+              {% endif %}{% endspaceless %}"
+              title="{{item.status}}: {{percent|round}}%"
+            aria-valuenow="{{percent}}"
+            aria-valuemin="0" aria-valuemax="100"
+            style="width: {{percent}}%; min-width: 1em;">
+            <span class="sr-only">{{percent}}%</span>
+            {% if item.status == "Completed" and item.trackedDownloadStatus == "Warning"%}
+              Error
+            {% elseif item.trackedDownloadStatus != "Ok" %}
+              {{item.status}}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+<hr/>
+
+
+<div class="col-xs-12">
+  <div class="row">
+    <h4>History</h4>
   </div>
   <div class="col-xs-12">
     {% for item in service.content.history.records %}
+    {% if loop.index <= 5 %}
     <div class="row">
-      {{ macros.SEFormat(item.episode) }} <strong>{{ item.series.title }}</strong> - {{ item.episode.title }}
+      {% if item.eventType == 'grabbed' %}
+        <span class="glyphicon glyphicon-cloud-download"> </span>
+      {% else %}
+        <span class="glyphicon glyphicon-hdd"> </span>
+      {% endif %}
+      {{ macros.episodeBlock(item) }}
+      {#<span class="noWrap">{{ macros.SEFormat(item.episode) }}</span>#}
+      {#<span class="noWrap"><strong>{{ item.series.title }}</strong> - </span>#}
+      {#<span class="noWrap">{{ item.episode.title }}</span>#}
     </div>
+    {% endif %}
     {% endfor %}
   </div>
 </div>
+
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>

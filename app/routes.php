@@ -18,11 +18,13 @@ $app->get('/', function () use ($app, $js_sources, $css_sources, $services) {
     $srv->evaluate_content();
   }
 
+  global $mobile;
   $app->render('layout.twig', array(
     'title' => 'Citadel',
     'js' => $js_sources,
     'css' => $css_sources,
-    'services' => $services
+    'services' => $services,
+    'client' => ['is_mobile' => $mobile ]
   ));  
 });
 
