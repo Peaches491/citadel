@@ -5,9 +5,10 @@ abstract class Status {
   const ONLINE = 1;
   const OFFLINE = 2;
   const ERROR = 3;
-
   const UPLOADING = 4;
   const DOWNLOADING = 5;
+  const PLAYING = 6;
+  const PAUSED = 7;
 
   static function build($idx, $text, $style, $icon) {
     Status::$data[$idx] = [
@@ -30,4 +31,6 @@ Status::build(Status::OFFLINE,     'Offline',     'warning', 'flash');
 Status::build(Status::ERROR,       'Error',       'danger',  'remove');
 Status::build(Status::UPLOADING,   'Uploading',   'success', 'open');
 Status::build(Status::DOWNLOADING, 'Downloading', 'success', 'save');
+Status::build(Status::PLAYING,     'Playing',     'success', 'play');
+Status::build(Status::PAUSED,      'Paused',      'success', 'pause');
 ?>

@@ -4,6 +4,7 @@ require_once __DIR__.'/../cachable.php';
 require_once 'status.php';
 require_once 'custom/FreeNAS.php';
 require_once 'custom/Sonarr.php';
+require_once 'custom/Plex.php';
 
 class Service
 {
@@ -115,6 +116,9 @@ class Service
           break;
         case 'FreeNAS':
           $srv = new FreeNAS($machines, $srv_arr);
+          break;
+        case 'Plex':
+          $srv = new Plex($machines, $srv_arr);
           break;
         default:
           $srv = new Service($machines, $srv_arr);

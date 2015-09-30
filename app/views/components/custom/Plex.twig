@@ -10,7 +10,71 @@
 {% endmacro %}
 {% import _self as macros %}
 
-<div class="col-xs-12">
+
+<h4>Now Playing</h4>
+{% for media in service.content.sessions._children %}
+<div class="media">
+  <div class="media-left">
+    <a href="#">
+      <img class="media-object" src="/plex.php?img={{media.thumb}}" alt="..."> </a>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">
+      <strong>
+        {{media.title}}
+      </strong>
+      ({{media.year}}) Rated: {{media.contentRating}}
+    </h4>
+
+    {{media.summary}}
+    <br/><br/>
+
+    <div>
+      <h5><strong>Playing on</strong></h5>
+      {% for attr in media._children %}
+        {% if attr._elementType == 'Player' %}
+          {{attr.title}}: {{attr.state}}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+
+
+<h4>Recently Added</h4>
+{% for media in service.content.recentlyAdded._children %}
+<div class="media">
+  <div class="media-left">
+    <a href="#">
+      <img class="media-object" src="/plex.php?img={{media.thumb}}" alt="..."> </a>
+  </div>
+  <div class="media-body">
+    {% if media.type == 'season' %}
+    <h4 class="media-heading">
+      <strong>
+        {{media.parentTitle}}
+      </strong>
+        - {{media.title}}
+    </h4>
+    {{media.parentSummary}}
+    {% elseif media.type == 'movie' %}
+    <h4 class="media-heading">
+      <strong>
+        {{media.title}}
+      </strong>
+      ({{media.year}}) Rated: {{media.contentRating}}
+    </h4>
+    {{media.summary}}
+    {% endif %}
+
+  </div>
+</div>
+{% endfor %}
+
+
+{#<div class="col-xs-12">
   <div class="row">
     <h4>Upcoming</h4>
   </div>
@@ -19,7 +83,7 @@
     {% if loop.index <= 5 %}
     <div class="row">
       {{ macros.SEFormat(item) }} <strong>{{ item.series.title }}</strong> - {{ item.title }}
-      {#{{ macros.episodeBlock(item) }}#}
+      [>{{ macros.episodeBlock(item) }}<]
     </div>
     {% endif %}
     {% endfor %}
@@ -42,10 +106,10 @@
         <span class="glyphicon
         {% if item.status == 'Completed' %}
           glyphicon-hdd
-          {#text-danger#}
+          [>text-danger<]
         {% else %}
           glyphicon-cloud-download
-          {#sonarr-warning#}
+          [>sonarr-warning<]
         {% endif %}
         ">
       </span>
@@ -80,8 +144,8 @@
             "
             role="progressbar"
             data-toggle="tooltip" data-placement="{% spaceless %}
-              {% if client.is_mobile %} top 
-              {% else %} left 
+              {% if client.is_mobile %} top
+              {% else %} left
               {% endif %}{% endspaceless %}"
               title="{{item.status}}: {{percent|round}}%"
             aria-valuenow="{{percent}}"
@@ -113,20 +177,18 @@
     <div class="row">
       {% if item.eventType == 'grabbed' %}
         <span class="glyphicon glyphicon-cloud-download"> </span>
-      {% elseif item.eventType == 'episodeFileDeleted' %}
-        <span class="glyphicon glyphicon-trash"> </span>
       {% else %}
         <span class="glyphicon glyphicon-hdd"> </span>
       {% endif %}
       {{ macros.episodeBlock(item) }}
-      {#<span class="noWrap">{{ macros.SEFormat(item.episode) }}</span>#}
-      {#<span class="noWrap"><strong>{{ item.series.title }}</strong> - </span>#}
-      {#<span class="noWrap">{{ item.episode.title }}</span>#}
+      [><span class="noWrap">{{ macros.SEFormat(item.episode) }}</span><]
+      [><span class="noWrap"><strong>{{ item.series.title }}</strong> - </span><]
+      [><span class="noWrap">{{ item.episode.title }}</span><]
     </div>
     {% endif %}
     {% endfor %}
   </div>
-</div>
+</div>#}
 
 <script>
 $(function () {

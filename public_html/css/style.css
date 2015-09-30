@@ -40,7 +40,7 @@ td.colShrink {
 
 .btn-bubble-left {
   top: 0px;
-  padding-top: 4px;
+  padding-top: 5px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
@@ -115,3 +115,6 @@ td.colShrink {
   color: #f0ad4e;
 } 
 
+img.media-object {
+  width: 10em;
+}

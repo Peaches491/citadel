@@ -6,7 +6,9 @@ $js_sources = array(
     'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js',
     'https://cdn.rawgit.com/pimvdb/jquery.chromelog/4c84617cbcddbc5dff2e5768b831ee8d17d01c82/jquery.chromelog.js'
   ),
-  'internal' => array()
+  'internal' => array(
+    //'/imagefix.js'
+  )
 );
 
 $css_sources = array(
