@@ -1,5 +1,4 @@
 <?php
-//require '../app/vendor/autoload.php';
 require '../app/utils.php';
 
 $services = Utils::load_services();
@@ -24,6 +23,7 @@ if($image_url) {
 	$image_src = $plexAddress . $image_url . '?X-Plex-Token=' . $plex_srv->api_key;
 
   header('Content-type: image/jpeg');
+  header('Cache-Control: max-age=2592000, public');
   //header("Content-Length: " . filesize($image_src));
   readfile($image_src);
 } else {

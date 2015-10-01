@@ -59,7 +59,7 @@ class Plex extends Service
 
     $rest = Utils::rest_call($this->get_url("/library/recentlyAdded"),
       ['X-Plex-Token' => $this->api_key,
-       'X-Plex-Container-Size' => 5,
+       'X-Plex-Container-Size' => 3,
        'X-Plex-Container-Start' => 0],
       ['Accept: application/json']);
     $this->content['recentlyAdded'] = $rest;

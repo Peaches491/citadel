@@ -12,6 +12,12 @@
     <!-- publish javascript variable -->
     <script>
         var global = {{global|json_encode|raw}}
+        function defer(method) {
+            if (window.jQuery)
+                method();
+            else
+                setTimeout(function() { defer(method) }, 50);
+        }
     </script>
 
     <!-- Include registered css -->
@@ -23,19 +29,19 @@
     <link rel="stylesheet" href="{{assetUrl}}{{cssfile}}" />
     {% endfor %}
 
-    <!-- Include registered javascript -->
-    {% for jsfile in js.external %}
-    <script src="{{jsfile}}" ></script>
-    {% endfor %}
-
-    {% for jsfile in js.internal %}
-    <script src="{{assetUrl}}/js{{jsfile}}"></script>
-    {% endfor %}
-
     <link rel="icon" type="image/jpg" href="favicon.jpg" />
 </head>
 <body>
     {% block body %}{% endblock %}
 
+
+    <!-- Include registered javascript -->
+    {% for jsfile in js.external %}
+    <script type="text/javascript" src="{{jsfile}}" ></script>
+    {% endfor %}
+
+    {% for jsfile in js.internal %}
+    <script type="text/javascript" src="{{assetUrl}}/js{{jsfile}}"></script>
+    {% endfor %}
 </body>
 </html>

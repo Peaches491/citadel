@@ -1,18 +1,16 @@
 <?php
 
 class Cachable {
+  static $mc;
   var $key = "";
   var $hash_source = "";
   var $hash = 0;
   var $expire = 0;
-  var $mc;
   var $target_func = 0;
   var $debug = false;
 
   function __construct($key, $expire, $hash_source = 0, $target_func = 0) {
     $this->expire = $expire;
-    $this->mc = new Memcached('mc');
-    $this->mc->addServer('localhost', 0);
     $this->target_func = $target_func;
     $this->key = $key;
 
@@ -23,7 +21,7 @@ class Cachable {
   }
 
   function get() {
-    $result = $this->mc->get($this->key);
+    $result = Cachable::$mc->get($this->key);
 
     if( $result == NULL ) {
       if($this->debug) var_dump('Result Null! ' . $this->key);
@@ -57,7 +55,7 @@ class Cachable {
         'value' => $value
       ];
     }
-    $this->mc->set($this->key, $value, $this->expire);
+    Cachable::$mc->set($this->key, $value, $this->expire);
   }
 
   function update_cache() {
@@ -69,18 +67,7 @@ class Cachable {
     }
   }
 }
-
-
-if(count(debug_backtrace()) == 0) {
-  $func = function() {
-    return range(1,5);
-  };
-  
-  $cache = new Cachable('test', 60, __file__, $func);
-  $cache->update_cache();
-  //$cache->set('test', range(1, 10));
-  var_dump($cache->get());
-}
-
+Cachable::$mc = new Memcached('mc');
+Cachable::$mc->addServer('localhost', 0);
 
 ?>

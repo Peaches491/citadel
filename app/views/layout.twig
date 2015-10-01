@@ -48,6 +48,7 @@
 </div>
 
 <script defer>
+defer(function() {
 $('.collapse').on('show.bs.collapse', function () {
     $('.collapse.in').collapse('hide');
     $('.collapsing[aria-expanded="false"]').collapse('hide');
@@ -75,6 +76,7 @@ $( window ).resize( function(event) {
   $('#service-panel').css('width', sideBarNavWidth);
 });
 $('#service-panel').resize();
+});
 </script>
 
 {% endblock %}

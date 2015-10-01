@@ -27,14 +27,6 @@ class FreeNAS extends Service
   function evaluate_status() {
     parent::evaluate_status();
 
-    $this->rest = Utils::rest_call($this->get_url("/api/v1.0/storage/volume/"), ['format' => 'json']);
-
-    if($this->rest == false || $this->rest[0]['status'] != "HEALTHY") {
-      $this->status = Status::to_array(Status::ERROR);
-    }
-    if($this->rest != false) {
-      $this->status['text'] = $this->rest[0]['status'];
-    }
   }
 
   function populate_content() {
@@ -44,6 +36,13 @@ class FreeNAS extends Service
       $this->content['volumes'] = $rest;
     } else {
       return;
+    }
+
+    if($rest == false || $rest[0]['status'] != "HEALTHY") {
+      $this->status = Status::to_array(Status::ERROR);
+    }
+    if($rest != false) {
+      $this->status['text'] = $rest[0]['status'];
     }
 
     $this->content['vol_status'] = [];

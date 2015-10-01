@@ -118,3 +118,7 @@ td.colShrink {
 img.media-object {
   width: 10em;
 }
+
+.row.media-row {
+  margin-bottom: 1em;
+}

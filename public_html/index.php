@@ -9,7 +9,9 @@ $app = new \Slim\Slim(array(
 $view = $app->view();
 $view->parserOptions = array(
   'debug' => true,
-  'cache' => dirname(__FILE__) . '/../cache'
+  'cache' => dirname(__FILE__) . '/../cache',
+  //'cache' => false,
+  'auto_reload' => true
 );
 $view->parserExtensions = array(
     new \Slim\Views\TwigExtension(),
@@ -28,6 +30,8 @@ if (!count($mcd->getServerList())) {
   $mcd->addServer("localhost", 0);
   $mcd->setOption( Memcached::OPT_LIBKETAMA_COMPATIBLE, true );
 }
+
+//$mcd->flush();
 
 //echo phpinfo();
 //echo xdebug_get_profiler_filename();
