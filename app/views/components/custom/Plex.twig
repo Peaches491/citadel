@@ -14,14 +14,14 @@
 {% if service.content.sessions._children %}
 <h4>Now Playing</h4>
 {% for media in service.content.sessions._children %}
-<div class="media">
-  <div class="media-left">
+<div class="row media-row">
+  <div class="col-xs-5 col-sm-3">
     <a href="/plex.php?img={{media.thumb}}" data-featherlight="image">
-      <img class="media-object"
+      <img class="media-object" id="{{media.thumb}}"
            src="/plex.php?img={{media.thumb}}" alt="...">
     </a>
   </div>
-  <div class="media-body">
+  <div class="col-xs-7 col-sm-9">
     <h4 class="media-heading">
       <strong>
         {{media.title}}

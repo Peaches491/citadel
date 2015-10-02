@@ -16,24 +16,14 @@ class Plex extends Service
   function evaluate_status() {
     parent::evaluate_status();
 
-  }
-
-  function populate_content() {
-    $this->content = [];
-
-    $rest = Utils::rest_call($this->get_url("/status/sessions"),
-      ['X-Plex-Token' => $this->api_key],
-      ['Accept: application/json']);
-
-    if($this->rest == false) {
+    if( !$this->content ) {
       $this->status = Status::to_array(Status::ERROR);
-    }
-    if($rest != false) {
+    } else if($this->content['sessions']) {
+      $rest = $this->content['sessions'];
       $this->status = Status::to_array(Status::ONLINE);
       if(count($rest['_children']) > 0) {
         foreach( $rest['_children'] as $element ) {
           if( $element['_elementType'] == 'Video' ) {
-
             foreach( $element['_children'] as $subElement ) {
               if( $subElement['_elementType'] == 'Player' ) {
                 if( $subElement['state'] == 'playing' ) {
@@ -47,6 +37,15 @@ class Plex extends Service
         }
       }
     }
+    $this->content['sessions'] = $rest;
+  }
+
+  function populate_content() {
+    $this->content = [];
+
+    $rest = Utils::rest_call($this->get_url("/status/sessions"),
+      ['X-Plex-Token' => $this->api_key],
+      ['Accept: application/json']);
     $this->content['sessions'] = $rest;
 
     $rest = Utils::rest_call($this->get_url("/servers"),

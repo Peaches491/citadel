@@ -2,10 +2,10 @@
 
 echo 'Hello, World!'
 
-end=$((SECONDS + 3600))
+end=$((SECONDS + 60))
 
 while [ $SECONDS -lt $end ]; do
-  curl localhost/opcache_reset.php
+  curl localhost/?forceClearCache
   curl localhost
-  sleep 15;
+  sleep 5;
 done

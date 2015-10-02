@@ -27,6 +27,13 @@ class FreeNAS extends Service
   function evaluate_status() {
     parent::evaluate_status();
 
+    if( $this->content && isset($this->content['volumes']) ) {
+      $rest = $this->content['volumes'];
+      if($rest[0]['status'] != "HEALTHY") {
+        $this->status = Status::to_array(Status::ERROR);
+      }
+      $this->status['text'] = $rest[0]['status'];
+    }
   }
 
   function populate_content() {
@@ -35,15 +42,10 @@ class FreeNAS extends Service
       recursive_usort($rest[0]['children'], 'used_pct');
       $this->content['volumes'] = $rest;
     } else {
-      return;
+      $this->content = [];
+      return [];
     }
 
-    if($rest == false || $rest[0]['status'] != "HEALTHY") {
-      $this->status = Status::to_array(Status::ERROR);
-    }
-    if($rest != false) {
-      $this->status['text'] = $rest[0]['status'];
-    }
 
     $this->content['vol_status'] = [];
     foreach ($this->content['volumes'] as $key => $volume) {
