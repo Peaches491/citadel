@@ -97,6 +97,13 @@ require_once 'models/service.php';
         'application/XML');
     }
 
+    static function clear_caches() {
+      $mcd = new Memcached('mc');
+      //opcache_reset();
+      //$mcd->flush();
+      var_dump("OPCache reset: " . opcache_reset());
+      var_dump("Memcached flush: " . $mcd->flush());
+    }
 
     static function is_mobile() {
       $useragent = $_SERVER['HTTP_USER_AGENT'];

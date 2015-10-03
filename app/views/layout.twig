@@ -15,10 +15,18 @@
     <div class="col-md-4" id="leftcolumn">
       <div class="panel panel-default affix" id="service-panel">
         <div class="panel-heading">
-          <h3 class="panel-title">Services</h3>
+          <form method="POST">
+            <h4 class="panel-title">Services
+              <input type="hidden" name="forceCacheClear" value="true" h>
+              <a id='refresh-btn' class="pull-right">
+                <span class="reload-spin glyphicon glyphicon-refresh"></span>
+              </a>
+            </h4>
+          </form>
         </div>
+
         <div class="panel-body">
-      <table class="table table-striped table-condensed">
+      <table class="table table-hover table-condensed">
         <tbody>
         {% for service in services %}
           {% embed "components/service_row.twig" %}
@@ -53,15 +61,21 @@ $('.collapse').on('show.bs.collapse', function () {
     $('.collapse.in').collapse('hide');
     $('.collapsing[aria-expanded="false"]').collapse('hide');
 });
-{#$('#service-panel table').find('.accordion-body').first().collapse('show');#}
-$("a[href^='#']").on('click', function(e) {
-   // prevent default anchor click behavior
+
+
+$('#refresh-btn').click(function(e){
+    e.preventDefault();
+    $(this).closest('form').submit();
+});
+
+
+$('a[href^="#"]').on('click', function(e) {
+   console.log('Attepmting to scroll!');
+   console.log(this);
+   console.log(this.hash);
+
    e.preventDefault();
-
-   // store hash
    var hash = this.hash;
-
-   // animate
    $('html, body').animate({
        scrollTop: $(hash).offset().top
      }, 500, function(){
@@ -71,11 +85,25 @@ $("a[href^='#']").on('click', function(e) {
      });
 
 });
+$('.clickable-row[data-href^="#"]').on('click', function(e) {
+   e.preventDefault();
+   var hash = $(this).attr('data-href');
+   $('html, body').animate({
+       scrollTop: $(hash).offset().top
+     }, 500, function(){
+       // when done, add hash to url
+       // (default click behaviour)
+       {#window.location.hash = hash;#}
+     });
+
+});
+
 $( window ).resize( function(event) {
   var sideBarNavWidth=$('#leftcolumn').width() - parseInt($('#leftcolumn').css('padding-left')) - parseInt($('#leftcolumn').css('padding-right'));
   $('#service-panel').css('width', sideBarNavWidth);
 });
 $('#service-panel').resize();
+
 });
 </script>
 

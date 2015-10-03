@@ -122,3 +122,18 @@ img.media-object {
 .row.media-row {
   margin-bottom: 1em;
 }
+
+.reload-spin {
+  border-radius: 50%;
+  -webkit-transition: -webkit-transform .6s ease-in-out,
+                      color .6s ease-in-out;
+  transition: transform .6s ease-in-out,
+              color .6s ease-in-out;
+  color: darkgray;
+}
+
+.reload-spin:hover {
+  -webkit-transform: rotate(60deg);
+  transform: rotate(60deg);
+  color: black;
+}

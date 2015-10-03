@@ -1,16 +1,18 @@
-<tr class="">
+<tr class="clickable-row {{service.status.style}}"
+    data-href="#{{ service.name }}">
   <td>
-    <a href="#{{ service.name }}">{{ service.name|default('Name') }}</a>
+    {#<a href="#{{ service.name }}">{{ service.name|default('Name') }}</a>#}
+    {{ service.name|default('Name') }}
   </td>
   <td class="">
     {% if service.status is defined %}
     <div class="btn-flex pull-right">
       {{ spaceless }}
 
-      {% if service.extended %}
+      {#{% if service.extended %}
       <a class="badge glyphicon glyphicon-plus btn-bubble-left" aria-hidden="true"
         href="#{{ service.name }}"> </a>
-      {% endif %}
+      {% endif %}#}
 
       {% include "components/status_button.twig" with {'size' : 'xs'} %}
 

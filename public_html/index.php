@@ -31,11 +31,6 @@ if (!count($mcd->getServerList())) {
   $mcd->setOption( Memcached::OPT_LIBKETAMA_COMPATIBLE, true );
 }
 
-if(isset($_GET["forceClearCache"])) {
-  var_dump("OPCache reset: " . opcache_reset());
-  var_dump("Memcached flush: " . $mcd->flush());
-}
-
 //echo phpinfo();
 //echo xdebug_get_profiler_filename();
 
