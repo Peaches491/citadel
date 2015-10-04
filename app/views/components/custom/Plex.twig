@@ -16,25 +16,28 @@
 {% for media in service.content.sessions._children %}
 <div class="row media-row">
   <div class="col-md-12">
-    <div class="media-text">
-      <a href="/plex.php?img={{media.thumb}}" data-featherlight="image">
-        <img class="media-object" id="{{media.thumb}}"
-             src="/plex.php?img={{media.thumb}}" alt="...">
-      </a>
-      {% if media.type == 'season' %}
+    {% if media.type == 'season' %}
       <h4 class="media-heading">
         <strong> {{media.parentTitle}} </strong>
-          - {{media.title}}
+               - {{media.title}}
       </h4>
-      {{media.parentSummary}}
-      {% elseif media.type == 'movie' %}
+    {% elseif media.type == 'movie' %}
       <h4 class="media-heading">
         <strong>
           {{media.title}}
         </strong>
         ({{media.year}}) Rated: {{media.contentRating}}
       </h4>
-      {{media.summary}}
+    {% endif %}
+    <div class="media-text">
+      <a href="/plex.php?img={{media.thumb}}" data-featherlight="image">
+        <img class="media-object" id="{{media.thumb}}"
+             src="/plex.php?img={{media.thumb}}" alt="...">
+      </a>
+      {% if media.type == 'season' %}
+        {{media.parentSummary}}
+      {% elseif media.type == 'movie' %}
+        {{media.summary}}
       {% endif %}
     </div>
   </div>
@@ -49,25 +52,28 @@
 {% for media in service.content.recentlyAdded._children %}
 <div class="row media-row">
   <div class="col-md-12">
-    <div class="media-text">
-      <a href="/plex.php?img={{media.thumb}}" data-featherlight="image">
-        <img class="media-object" id="{{media.thumb}}"
-             src="/plex.php?img={{media.thumb}}" alt="...">
-      </a>
-      {% if media.type == 'season' %}
+    {% if media.type == 'season' %}
       <h4 class="media-heading">
         <strong> {{media.parentTitle}} </strong>
-          - {{media.title}}
+               - {{media.title}}
       </h4>
-      {{media.parentSummary}}
-      {% elseif media.type == 'movie' %}
+    {% elseif media.type == 'movie' %}
       <h4 class="media-heading">
         <strong>
           {{media.title}}
         </strong>
         ({{media.year}}) Rated: {{media.contentRating}}
       </h4>
-      {{media.summary}}
+    {% endif %}
+    <div class="media-text">
+      <a href="/plex.php?img={{media.thumb}}" data-featherlight="image">
+        <img class="media-object" id="{{media.thumb}}"
+             src="/plex.php?img={{media.thumb}}" alt="...">
+      </a>
+      {% if media.type == 'season' %}
+        {{media.parentSummary}}
+      {% elseif media.type == 'movie' %}
+        {{media.summary}}
       {% endif %}
     </div>
   </div>
