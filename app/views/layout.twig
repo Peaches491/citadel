@@ -6,14 +6,15 @@
 
 {% include "components/navbar.twig" %}
 
-
 <div class="container">
-  <div class="col-md-12">
   {#<div class="row" style="min-height: 2em">#}
   {#</div>#}
+  <div class="col-xs-12">
   <div class="row">
-    <div class="col-md-4" id="leftcolumn">
-      <div class="panel panel-default affix" id="service-panel">
+    <div id="leftcolumn" class="col-md-4 scrollspy">
+      <div id="nav"
+           class="panel panel-default"
+           data-spy="affix-top">
         <div class="panel-heading">
           <form method="POST">
             <h4 class="panel-title">Services
@@ -24,19 +25,18 @@
             </h4>
           </form>
         </div>
-
         <div class="panel-body">
-      <table class="table table-hover table-condensed">
-        <tbody>
-        {% for service in services %}
-          {% embed "components/service_row.twig" %}
-            {% block content %}
-              {{ service.machine.name }}
-            {% endblock content %}
-          {% endembed %}
-        {% endfor %}
-        </tbody>
-      </table>
+          <table class="table table-hover table-condensed">
+            <tbody>
+            {% for service in services %}
+              {% embed "components/service_row.twig" %}
+                {% block content %}
+                  {{ service.machine.name }}
+                {% endblock content %}
+              {% endembed %}
+            {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -62,47 +62,41 @@ $('.collapse').on('show.bs.collapse', function () {
     $('.collapsing[aria-expanded="false"]').collapse('hide');
 });
 
-
 $('#refresh-btn').click(function(e){
     e.preventDefault();
     $(this).closest('form').submit();
 });
 
-
 $('a[href^="#"]').on('click', function(e) {
-   console.log('Attepmting to scroll!');
-   console.log(this);
-   console.log(this.hash);
-
    e.preventDefault();
    var hash = this.hash;
    $('html, body').animate({
-       scrollTop: $(hash).offset().top
-     }, 500, function(){
-       // when done, add hash to url
-       // (default click behaviour)
-       {#window.location.hash = hash;#}
-     });
-
+     scrollTop: $(hash).offset().top
+   }, 500, function(){ });
 });
 $('.clickable-row[data-href^="#"]').on('click', function(e) {
    e.preventDefault();
    var hash = $(this).attr('data-href');
    $('html, body').animate({
-       scrollTop: $(hash).offset().top
-     }, 500, function(){
-       // when done, add hash to url
-       // (default click behaviour)
-       {#window.location.hash = hash;#}
-     });
-
+     scrollTop: $(hash).offset().top
+   }, 500, function(){ });
 });
 
-$( window ).resize( function(event) {
-  var sideBarNavWidth=$('#leftcolumn').width() - parseInt($('#leftcolumn').css('padding-left')) - parseInt($('#leftcolumn').css('padding-right'));
-  $('#service-panel').css('width', sideBarNavWidth);
+$('#nav').affix({
+  offset: {
+    top: ($('#nav').offset().top - 20)
+  }
 });
-$('#service-panel').resize();
+
+var fixNavWidth = function(event) {
+  console.log("Fixing width!");
+  var sideBarNavWidth = $('#leftcolumn').width() -
+   parseInt($('#leftcolumn').css('padding-right'));
+  $('#nav').css('width', sideBarNavWidth);
+}
+
+$( window ).resize( fixNavWidth );
+$('#nav').resize();
 
 });
 </script>

@@ -1,3 +1,11 @@
+body {
+  position: relative;
+}
+
+.affix {
+  top: 20px;
+}
+
 .container-fluid {
   /*padding: 2em;*/
 }
@@ -26,7 +34,7 @@ td.colShrink {
     border: none;
 }
 
-#service-panel .panel-body {
+#nav .panel-body {
   padding: 0;
 }
 
@@ -116,7 +124,7 @@ td.colShrink {
 } 
 
 img.media-object {
-  width: 10em;
+  width: 100%;
 }
 
 .row.media-row {
