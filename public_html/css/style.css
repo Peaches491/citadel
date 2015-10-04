@@ -21,6 +21,12 @@ body {
   }
 }
 
+.navbar-brand>img {
+  height: 1em;
+  display: inline;
+  margin-right: 0.5rem;
+}
+
 .table tbody>tr.vert-align>td{
   vertical-align: middle;
 }
