@@ -57,6 +57,11 @@
 
 <script defer>
 defer(function() {
+
+$('body').scrollspy({
+  target: '#nav'
+});
+
 $('.collapse').on('show.bs.collapse', function () {
     $('.collapse.in').collapse('hide');
     $('.collapsing[aria-expanded="false"]').collapse('hide');
@@ -71,14 +76,14 @@ $('a[href^="#"]').on('click', function(e) {
    e.preventDefault();
    var hash = this.hash;
    $('html, body').animate({
-     scrollTop: $(hash).offset().top
+     scrollTop: $(hash).offset().top - 10
    }, 500, function(){ });
 });
 $('.clickable-row[data-href^="#"]').on('click', function(e) {
    e.preventDefault();
    var hash = $(this).attr('data-href');
    $('html, body').animate({
-     scrollTop: $(hash).offset().top
+     scrollTop: $(hash).offset().top - 10
    }, 500, function(){ });
 });
 
@@ -89,13 +94,18 @@ $('#nav').affix({
 });
 
 var fixNavWidth = function(event) {
+  if( $('#nav').css('position') != 'fixed' ) {
+    console.log('Exiting early!');
+    return;
+  }
   console.log("Fixing width!");
-  var sideBarNavWidth = $('#leftcolumn').width() -
-   parseInt($('#leftcolumn').css('padding-right'));
+  var sideBarNavWidth = $('#leftcolumn').width();
+   {#parseInt($('#leftcolumn').css('padding-right'));#}
   $('#nav').css('width', sideBarNavWidth);
 }
 
-$( window ).resize( fixNavWidth );
+$('#nav').resize( fixNavWidth );
+$('body').on('affixed.bs.affix', fixNavWidth);
 $('#nav').resize();
 
 });

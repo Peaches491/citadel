@@ -2,16 +2,27 @@ body {
   position: relative;
 }
 
-.affix {
-  top: 20px;
+@media (max-width: 992px) {
+  .affix {
+    position: static;
+    width: auto !important;
+  }
+  .text-right-md {
+    text-align: right;
+  }
 }
 
-.container-fluid {
-  /*padding: 2em;*/
+  .affix {
+    top: 20px;
+  }
+@media (min-width: 992px) {
+  .text-right-md {
+    text-align: right;
+  }
 }
 
 .table tbody>tr.vert-align>td{
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 td.colShrink {
@@ -31,7 +42,7 @@ td.colShrink {
 }
 
 .borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
-    border: none;
+  border: none;
 }
 
 #nav .panel-body {
@@ -64,22 +75,6 @@ td.colShrink {
 
 .pad-right-small {
   padding-right: 5px;
-}
-
-@media (max-width: 992px) {
-  .affix {
-    position: static;
-    width: auto !important;
-  }
-  .text-right-md {
-    text-align: right;
-  }
-}
-
-@media (min-width: 992px) {
-  .text-right-md {
-    text-align: right;
-  }
 }
 
 .service-header {
@@ -131,12 +126,16 @@ img.media-object {
   margin-bottom: 1em;
 }
 
+.media-text {
+  word-break: break-word;
+}
+
 .reload-spin {
   border-radius: 50%;
   -webkit-transition: -webkit-transform .6s ease-in-out,
-                      color .6s ease-in-out;
+  color .6s ease-in-out;
   transition: transform .6s ease-in-out,
-              color .6s ease-in-out;
+  color .6s ease-in-out;
   color: darkgray;
 }
 
