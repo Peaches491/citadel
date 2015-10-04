@@ -15,30 +15,27 @@
 <h4>Now Playing</h4>
 {% for media in service.content.sessions._children %}
 <div class="row media-row">
-  <div class="col-xs-5 col-sm-3">
-    <a href="/plex.php?img={{media.thumb}}" data-featherlight="image">
-      <img class="media-object" id="{{media.thumb}}"
-           src="/plex.php?img={{media.thumb}}" alt="...">
-    </a>
-  </div>
-  <div class="col-xs-7 col-sm-9">
-    <h4 class="media-heading">
-      <strong>
-        {{media.title}}
-      </strong>
-      ({{media.year}}) Rated: {{media.contentRating}}
-    </h4>
-
-    {{media.summary}}
-    <br/><br/>
-
-    <div>
-      <h5><strong>Playing on</strong></h5>
-      {% for attr in media._children %}
-        {% if attr._elementType == 'Player' %}
-          {{attr.title}}: {{attr.state}}
-        {% endif %}
-      {% endfor %}
+  <div class="col-md-12">
+    <div class="media-text">
+      <a href="/plex.php?img={{media.thumb}}" data-featherlight="image">
+        <img class="media-object" id="{{media.thumb}}"
+             src="/plex.php?img={{media.thumb}}" alt="...">
+      </a>
+      {% if media.type == 'season' %}
+      <h4 class="media-heading">
+        <strong> {{media.parentTitle}} </strong>
+          - {{media.title}}
+      </h4>
+      {{media.parentSummary}}
+      {% elseif media.type == 'movie' %}
+      <h4 class="media-heading">
+        <strong>
+          {{media.title}}
+        </strong>
+        ({{media.year}}) Rated: {{media.contentRating}}
+      </h4>
+      {{media.summary}}
+      {% endif %}
     </div>
   </div>
 </div>
@@ -51,30 +48,28 @@
 <h4>Recently Added</h4>
 {% for media in service.content.recentlyAdded._children %}
 <div class="row media-row">
-  <div class="col-xs-5 col-sm-3">
-    <a href="/plex.php?img={{media.thumb}}" data-featherlight="image">
-      <img class="media-object" id="{{media.thumb}}"
-           src="/plex.php?img={{media.thumb}}" alt="...">
-    </a>
-  </div>
-  <div class="media-text col-xs-7 col-sm-9">
-    {% if media.type == 'season' %}
-    <h4 class="media-heading">
-      <strong>
-        {{media.parentTitle}}
-      </strong>
-        - {{media.title}}
-    </h4>
-    {{media.parentSummary}}
-    {% elseif media.type == 'movie' %}
-    <h4 class="media-heading">
-      <strong>
-        {{media.title}}
-      </strong>
-      ({{media.year}}) Rated: {{media.contentRating}}
-    </h4>
-    {{media.summary}}
-    {% endif %}
+  <div class="col-md-12">
+    <div class="media-text">
+      <a href="/plex.php?img={{media.thumb}}" data-featherlight="image">
+        <img class="media-object" id="{{media.thumb}}"
+             src="/plex.php?img={{media.thumb}}" alt="...">
+      </a>
+      {% if media.type == 'season' %}
+      <h4 class="media-heading">
+        <strong> {{media.parentTitle}} </strong>
+          - {{media.title}}
+      </h4>
+      {{media.parentSummary}}
+      {% elseif media.type == 'movie' %}
+      <h4 class="media-heading">
+        <strong>
+          {{media.title}}
+        </strong>
+        ({{media.year}}) Rated: {{media.contentRating}}
+      </h4>
+      {{media.summary}}
+      {% endif %}
+    </div>
   </div>
 </div>
 {% endfor %}

@@ -52,6 +52,12 @@
         {{ macros.episodeBlock(item) }}
       </div>
       <div class="col-md-2">
+        {% set percent = ((item.size - item.sizeleft)*100 / item.size) %}
+        <div title="{{item.status}}: {{percent|round}}%"
+             data-toggle="tooltip" data-placement="{% spaceless %}
+                {% if client.is_mobile %} top 
+                {% else %} left 
+                {% endif %}{% endspaceless %}">
         <div class="progress progress-no-margin
           {% if item.status == "Downloading"
              or item.status == "Paused"
@@ -59,40 +65,35 @@
           progress-small
           {% endif %}
           ">
-          {% set percent = ((item.size - item.sizeleft)*100 / item.size) %}
-          <div class="progress-bar
-            {% if item.status == 'Completed' %}
-              progress-bar-striped
-              progress-bar-warning
-            {% elseif item.status == 'Paused' %}
-              progress-bar-striped
-              progress-bar-warning
-            {% elseif item.status == 'Queued' %}
-              progress-bar-striped
-              active
-            {% elseif item.status == 'Downloading' %}
-              progress-bar-success
-              progress-bar-striped
-              active
-            {% else %}
-              progress-bar-danger
-            {% endif %}
-            "
-            role="progressbar"
-            data-toggle="tooltip" data-placement="{% spaceless %}
-              {% if client.is_mobile %} top 
-              {% else %} left 
-              {% endif %}{% endspaceless %}"
-              title="{{item.status}}: {{percent|round}}%"
-            aria-valuenow="{{percent}}"
-            aria-valuemin="0" aria-valuemax="100"
-            style="width: {{percent}}%; min-width: 1em;">
-            <span class="sr-only">{{percent}}%</span>
-            {% if item.status == "Completed" and item.trackedDownloadStatus == "Warning"%}
-              Error
-            {% elseif item.trackedDownloadStatus != "Ok" %}
-              {{item.status}}
-            {% endif %}
+            <div class="progress-bar
+              {% if item.status == 'Completed' %}
+                progress-bar-striped
+                progress-bar-warning
+              {% elseif item.status == 'Paused' %}
+                progress-bar-striped
+                progress-bar-warning
+              {% elseif item.status == 'Queued' %}
+                progress-bar-striped
+                active
+              {% elseif item.status == 'Downloading' %}
+                progress-bar-success
+                progress-bar-striped
+                active
+              {% else %}
+                progress-bar-danger
+              {% endif %}
+              "
+              role="progressbar"
+              aria-valuenow="{{percent}}"
+              aria-valuemin="0" aria-valuemax="100"
+              style="width: {{percent}}%; min-width: 1em;">
+              <span class="sr-only">{{percent}}%</span>
+              {% if item.status == "Completed" and item.trackedDownloadStatus == "Warning"%}
+                Error
+              {% elseif item.trackedDownloadStatus != "Ok" %}
+                {{item.status}}
+              {% endif %}
+            </div>
           </div>
         </div>
       </div>
@@ -131,7 +132,9 @@
 <script>
 defer( function() {
   $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    })
   })
 });
 </script>
