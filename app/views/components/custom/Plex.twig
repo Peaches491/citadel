@@ -16,9 +16,9 @@
 {% for media in service.content.sessions._children %}
 <div class="row media-row">
   <div class="col-md-12">
-    {% if media.type == 'season' %}
+    {% if media.type == 'episode' %}
       <h4 class="media-heading">
-        <strong> {{media.parentTitle}} </strong>
+        <strong> {{media.grandparentTitle}} </strong>
                - {{media.title}}
       </h4>
     {% elseif media.type == 'movie' %}
@@ -34,11 +34,18 @@
         <img class="media-object" id="{{media.thumb}}"
              src="/plex.php?img={{media.thumb}}" alt="...">
       </a>
-      {% if media.type == 'season' %}
-        {{media.parentSummary}}
+      {% if media.type == 'episode' %}
+        {{media.summary}}
       {% elseif media.type == 'movie' %}
         {{media.summary}}
       {% endif %}
+
+      <h5><strong>Playing on</strong></h5>
+      {% for attr in media._children %}
+        {% if attr._elementType == 'Player' %}
+          {{attr.title}}: {{attr.state}}
+        {% endif %}
+      {% endfor %}</strong></h5>
     </div>
   </div>
 </div>
