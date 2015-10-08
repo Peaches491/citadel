@@ -141,6 +141,17 @@ img.media-object {
   word-break: break-word;
 }
 
+.user-block {
+  margin: auto;
+  width: 50%;
+}
+
+.gravatar {
+  height: 6em;
+  float: right;
+  margin-right: 10px
+}
+
 .reload-spin {
   border-radius: 50%;
   -webkit-transition: -webkit-transform .6s ease-in-out,

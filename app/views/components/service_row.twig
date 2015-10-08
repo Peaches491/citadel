@@ -1,4 +1,8 @@
-<tr class="clickable-row {{service.status.style}}"
+<tr class="
+    {% if service.extended %}
+      {{service.status.style}}
+      clickable-row
+    {% endif %}"
     data-href="#{{ service.name }}">
   <td>
     {#<a href="#{{ service.name }}">{{ service.name|default('Name') }}</a>#}

@@ -12,7 +12,7 @@
 
 
 {% if service.content.sessions._children %}
-<h4>Now Playing</h4>
+<h3>Now Playing</h3>
 {% for media in service.content.sessions._children %}
 <div class="row media-row">
   <div class="col-md-12">
@@ -40,22 +40,29 @@
         {{media.summary}}
       {% endif %}
 
-      <h5><strong>Playing on</strong></h5>
-      {% for attr in media._children %}
-        {% if attr._elementType == 'Player' %}
-          {{attr.title}}: {{attr.state}}
-        {% endif %}
-      {% endfor %}</strong></h5>
     </div>
   </div>
 </div>
+  <div class="row">
+    <div class="user-block">
+    {% for attr in media._children %}
+      {% if attr._elementType == 'User' %}
+        <img class="gravatar" src="{{attr.thumb}}">
+        <div><strong>User:</strong> {{attr.title}}</div>
+      {% elseif attr._elementType == 'Player' %}
+        <div><strong>Device:</strong> {{attr.title}}</div>
+        <div><strong>Platform:</strong> {{attr.platform}}</div>
+        <div><strong>State:</strong> {{attr.state}}</div>
+      {% endif %}
+    {% endfor %}
+    </div>
+  </div>
 {% endfor %}
 {% endif %}
 
 
-
 {% if service.content.recentlyAdded._children %}
-<h4>Recently Added</h4>
+<h3>Recently Added</h3>
 {% for media in service.content.recentlyAdded._children %}
 <div class="row media-row">
   <div class="col-md-12">

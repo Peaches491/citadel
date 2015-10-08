@@ -12,31 +12,54 @@
   <div class="col-xs-12">
   <div class="row">
     <div id="leftcolumn" class="col-md-4 scrollspy">
-      <div id="nav"
-           class="panel panel-default"
-           data-spy="affix-top">
-        <div class="panel-heading">
-          <form method="POST">
-            <h4 class="panel-title">Services
-              <input type="hidden" name="forceCacheClear" value="true" h>
-              <a id='refresh-btn' class="pull-right">
-                <span class="reload-spin glyphicon glyphicon-refresh"></span>
-              </a>
-            </h4>
-          </form>
+      <div id="nav" data-spy="affix-top">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <form method="POST">
+              <h4 class="panel-title">Services
+                <input type="hidden" name="forceCacheClear" value="true" h>
+                <a id='refresh-btn' class="pull-right">
+                  <span class="reload-spin glyphicon glyphicon-refresh"></span>
+                </a>
+              </h4>
+            </form>
+          </div>
+          <div class="panel-body">
+            <table class="table table-hover table-condensed">
+              <tbody>
+              {% for service in services %}
+                {% if service.extended %}
+                  {% embed "components/service_row.twig" %}
+                    {% block content %}
+                      {{ service.machine.name }}
+                    {% endblock content %}
+                  {% endembed %}
+                {% endif %}
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="panel-body">
-          <table class="table table-hover table-condensed">
-            <tbody>
-            {% for service in services %}
-              {% embed "components/service_row.twig" %}
-                {% block content %}
-                  {{ service.machine.name }}
-                {% endblock content %}
-              {% endembed %}
-            {% endfor %}
-            </tbody>
-          </table>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">Other</h4>
+          </div>
+          <div class="panel-body">
+            <table class="table table-condensed">
+              <tbody>
+              {% for service in services %}
+                {% if not service.extended %}
+                  {% embed "components/service_row.twig" %}
+                    {% block content %}
+                      {{ service.machine.name }}
+                    {% endblock content %}
+                  {% endembed %}
+                {% endif %}
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
